@@ -2,21 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { Todo } from "@/types";
+import TodoInput from "@/components/TodoInput";
+import TodoList from "@/components/TodoList";
+
+
 
 export default function Home() {
 
-  const [todos, setTodos] = useState<Todo[]>([]);
-
-  useEffect(() => {
-    const stored = localStorage.getItem('todos');
-    if (stored) {
-      try {
-        setTodos(JSON.parse(stored))
-      } catch {
-        setTodos([]);
-      }
+ const [todos, setTodos] = useState<Todo[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const stored = localStorage.getItem("todos");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
     }
-  }, []);
+  });
 
   useEffect( () => {
     localStorage.setItem('todos', JSON.stringify(todos))
@@ -47,10 +48,30 @@ export default function Home() {
   };
 
   return(
-    <div className="p-4 text-center">
-      <h1 className="text-2xl font-bold mb-4 text-white bg-black"> To-Do List</h1>
-      <p> Estado central carregado. Proximas fases vão adicionar os componentes</p>
-    </div>
+    <main className=" min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className=" max-w-2xl mx-auto">
+        <div className=" bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-8">
+          <div className=" mb-6">
+            <h1 className=" text-3xl font-bold text-gray-900 tracking-tight">
+              Minhas tarefas
+            </h1>
+            <p className=" mt-2 text-sm text-gray-500">
+              Organize seu dia com a sua To-Do List
+            </p>
+          </div>
+
+          <TodoInput onAdd={addTodo} />
+
+          <TodoList 
+            todos={todos}
+            onToggle={toggleTodo}
+            onDelete={deleteTodo}
+            />
+
+
+        </div>
+      </div>
+    </main>
   )
 
 

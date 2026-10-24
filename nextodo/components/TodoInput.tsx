@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import { Plus } from "lucide-react"
-import { Todo } from "@/types"
 
-interface TodoinputProps {
+
+interface TodoInputProps {
     onAdd: (text: string) => void;
 }
 
-export default function TodoInput( { onAdd }: TodoinputProps) {
+export default function TodoInput( { onAdd }: TodoInputProps) {
     const [text, setText] = useState('');
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -39,9 +39,9 @@ export default function TodoInput( { onAdd }: TodoinputProps) {
                 disabled={!trimmedText}
             >
 
-                <Plus size={18}>
-                    <span>Adicionar</span>
-                </Plus>
+                <Plus size={18} />
+                <span>Adicionar</span>
+                
                 
             </button>
         </form>
